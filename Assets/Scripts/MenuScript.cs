@@ -12,12 +12,13 @@ public class MenuScript : MonoBehaviour
     GameObject sensitivitySlider;
     GameObject sensitivityShower;
 
-    public string username = "User #" + Random.Range(0, 100);
+    public string username = "Unnamed User";
     public float sensitivity = 0.5f;
     
     // Start is called before the first frame update
     void Start()
     {
+        username = "User #" + Random.Range(0, 100);
         nameField = transform.GetChild(0).Find("Username").gameObject;
         sensitivitySlider = transform.GetChild(0).Find("Sensitivity").gameObject;
         sensitivityShower = sensitivitySlider.transform.Find("SensitivityShow").gameObject;
