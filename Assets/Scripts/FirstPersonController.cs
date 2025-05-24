@@ -9,7 +9,7 @@ public class FirstPersonController : MonoBehaviour {
     public float gravity = -9.81f;
 
     [Header("Look")]
-    public float mouseSensitivity = 100f;
+    public float mouseSensitivity = 1000f;
     public Transform playerCamera;
 
     private CharacterController controller;
@@ -33,7 +33,6 @@ public class FirstPersonController : MonoBehaviour {
 
         transform.Rotate(Vector3.up * mouseX);
 
-        // ----- MOVEMENT -----
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 move = transform.right * x + transform.forward * z;
