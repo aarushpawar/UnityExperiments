@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class Rewind : MonoBehaviour
 {
-    static bool rewindInput = false;
+    public static bool rewindInput = false;
     bool receivedRewind = false;
-    ArrayList<Transform> transforms = new System.Collections.ArrayList<Transform>();
+    List<Transform> transforms = new List<Transform>();
     float cooldown = 1f;
     // Start is called before the first frame update
     void Start()
