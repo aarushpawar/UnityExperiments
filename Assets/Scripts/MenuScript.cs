@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
-    bool menuEnabled = false;
+    public bool menuEnabled = false;
 
     GameObject nameField;
     GameObject sensitivitySlider;
@@ -38,7 +38,7 @@ public class MenuScript : MonoBehaviour
     }
 
     public void ConfirmNameChange() {
-        username = nameField.GetComponent<InputField>().text;
+        username = nameField.GetComponent<TMP_InputField>().text;
     }
 
     public void Resume() {
