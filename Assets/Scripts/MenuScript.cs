@@ -22,6 +22,8 @@ public class MenuScript : MonoBehaviour
         nameField = transform.GetChild(0).Find("Username").gameObject;
         sensitivitySlider = transform.GetChild(0).Find("Sensitivity").gameObject;
         sensitivityShower = sensitivitySlider.transform.Find("SensitivityShow").gameObject;
+
+        nameField.GetComponent<TMP_InputField>().text = username;
     }
 
     // Update is called once per frame
