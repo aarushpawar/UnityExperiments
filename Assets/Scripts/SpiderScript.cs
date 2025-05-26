@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
-public class SpiderScript : MonoBehaviour {
+public class SpiderScript : MonoBehaviour
+{
     [SerializeField]
     public GameObject centerOfMass;
 
@@ -11,46 +13,84 @@ public class SpiderScript : MonoBehaviour {
 
     [SerializeField]
     public GameObject legPrefab;
+    // anchor point of prefab is at the top of the cube
+    // cube is 1x1x1
+    // needs to be resized because spider body is 0.4x0.4x0.4
 
-    [SerializeField]
+    [Header("Leg Settings")]
+
+    [SerializeField, Range(0, 100)]
     public int segmentCount = 3;
 
     List<List<GameObject>> legs = new List<List<GameObject>>();
 
-    void Start() {
-        float legLength = 0.8f;
-        float segmentLength = legLength / segmentCount;
+    public void GenerateLegs()
+    {
+        DestroyLegs();
 
-        foreach (GameObject point in legPoints) {
+        legs = new List<List<GameObject>>();
+
+        float sizeDescale = 0.7f;
+
+        foreach (GameObject point in legPoints)
+        {
             List<GameObject> segments = new List<GameObject>();
 
-            Vector3 start = point.transform.position;
-            Vector3 toCenter = (centerOfMass.transform.position - start).normalized;
-            Vector3 outward = -toCenter;
-            Vector3 lastPosition = start;
+            point.transform.LookAt(centerOfMass.transform, Vector3.forward);
+            point.transform.eulerAngles = new Vector3(0f, point.transform.eulerAngles.y + 180f, 0f);
+            point.transform.localScale = Vector3.one * 0.8f;
 
-            for (int i = 0; i < segmentCount; i++) {
-                float t = i / (float)(segmentCount - 1);
+            GameObject previousSegment = point;
 
-                Vector3 arcOffset = Vector3.up * Mathf.Cos(t * Mathf.PI) * 0.4f;
-                Vector3 outwardOffset = outward * segmentLength;
+            for (int i = 0; i < segmentCount; i++)
+            {
+                GameObject segment = Instantiate(legPrefab, previousSegment.transform);
 
-                Vector3 nextPosition = lastPosition + outwardOffset + arcOffset;
+                if (i != 0) segment.transform.localPosition = new Vector3(0f, -previousSegment.transform.localScale.y * (1f / sizeDescale), 0f);
+                segment.transform.localScale = Vector3.one * sizeDescale;
 
-                GameObject segment = Instantiate(legPrefab, lastPosition, Quaternion.identity);
-                segment.transform.localScale = new Vector3(0.1f, 0.1f, segmentLength);
-                segment.transform.rotation = Quaternion.LookRotation((nextPosition - lastPosition).normalized);
-                segment.transform.SetParent(point.transform);
+                segment.transform.LookAt(centerOfMass.transform.position + 
+                    Vector3.up * Mathf.Lerp(-0.5f, 4f, (i / (float) (segmentCount - 1))), 
+                    Vector3.up);
 
+                previousSegment = segment;
                 segments.Add(segment);
-                lastPosition = nextPosition;
             }
 
             legs.Add(segments);
         }
     }
 
-    void Update() {
+    void DestroyLegs()
+    {
+        if (legs != null)
+        {
+            foreach (List<GameObject> leg in legs)
+            {
+                foreach (GameObject segment in leg)
+                {
+                    DestroyImmediate(segment);
+                }
+            }
+            legs.Clear();
+        }
+
+        foreach (GameObject point in legPoints)
+        {
+            foreach (Transform child in point.transform)
+            {
+                DestroyImmediate(child.gameObject);
+            }
+        }
+    }
+
+    void Start()
+    {
+        //GenerateLegs(); // Remove from Start
+    }
+
+    void Update()
+    {
 
     }
 }
