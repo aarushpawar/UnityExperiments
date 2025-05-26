@@ -50,7 +50,7 @@ public class SpiderScript : MonoBehaviour
                 segment.transform.localScale = Vector3.one * sizeDescale;
 
                 segment.transform.LookAt(centerOfMass.transform.position + 
-                    Vector3.up * Mathf.Lerp(-0.5f, 4f, (i / (float) (segmentCount - 1))), 
+                    Vector3.up * Mathf.Lerp(-10f, -1f, (i / (float) (segmentCount - 1))), 
                     Vector3.up);
 
                 previousSegment = segment;
