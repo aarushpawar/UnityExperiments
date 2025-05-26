@@ -3,13 +3,20 @@ using UnityEngine;
 
 [CustomEditor(typeof(SpiderScript))]
 public class SpiderScriptEditor : Editor {
-    public override void OnInspectorGUI() {
+    public override void OnInspectorGUI()
+    {
         SpiderScript spiderScript = (SpiderScript)target;
 
         DrawDefaultInspector();
 
-        if (GUILayout.Button("Generate Legs")) {
+        if (GUILayout.Button("Generate Legs"))
+        {
             spiderScript.GenerateLegs();
+        }
+        
+        
+        if (GUILayout.Button("Clear Legs")) {
+            spiderScript.DestroyLegs();
         }
     }
 }
