@@ -24,13 +24,15 @@ public class SpiderScript : MonoBehaviour
 
     List<List<GameObject>> legs = new List<List<GameObject>>();
 
+    [SerializeField, Range(0f, 1f)]
+    public float legSizeFalloff = 0.5f;
+
     public void GenerateLegs()
     {
         DestroyLegs();
 
         legs = new List<List<GameObject>>();
 
-        float sizeDescale = 0.7f;
 
         foreach (GameObject point in legPoints)
         {
@@ -46,8 +48,8 @@ public class SpiderScript : MonoBehaviour
             {
                 GameObject segment = Instantiate(legPrefab, previousSegment.transform);
 
-                if (i != 0) segment.transform.localPosition = new Vector3(0f, -previousSegment.transform.localScale.y * (1f / sizeDescale), 0f);
-                segment.transform.localScale = Vector3.one * sizeDescale;
+                if (i != 0) segment.transform.localPosition = new Vector3(0f, -previousSegment.transform.localScale.y * (1f / legSizeFalloff), 0f);
+                segment.transform.localScale = Vector3.one * legSizeFalloff;
 
                 segment.transform.LookAt(centerOfMass.transform.position + 
                     Vector3.up * Mathf.Lerp(-10f, -1f, (i / (float) (segmentCount - 1))), 
